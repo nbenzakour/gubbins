@@ -30,6 +30,8 @@ def main():
 	group = OptionGroup(parser, "Output Options")
 	group.add_option("-o", "--output", action="store", dest="outputfile", help="output file name [default= %default]", type="string", metavar="FILE", default="test.pdf")
 	group.add_option("-t", "--tree", action="store", dest="tree", help="tree file to align tab files to", default="")
+	# added option to provide length of the genome to be used as the canvas width (optional)
+	group.add_option("-g", "--genome", action="store", dest="genome", help="genome length", default="")
 	
 	parser.add_option_group(group)
 	
@@ -781,14 +783,20 @@ if __name__ == "__main__":
 	#find the maximum feature endpoint to scale by
 	max_feature_length=0
 	
-	for track in my_tracks:
-		max_track_feature_length=my_tracks[track].get_max_feature_length()
-		if max_track_feature_length>max_feature_length:
-			max_feature_length=max_track_feature_length
-		for plot in my_tracks[track].plots:
-			for data in plot.xdata:
-				if data[-1]>max_feature_length:
-					max_feature_length=data[-1]
+	if options.genome!="":
+                max_feature_length=int(options.genome)
+        else:
+                max_feature_length=0
+                print "No genome length provided"
+	
+		for track in my_tracks:
+			max_track_feature_length=my_tracks[track].get_max_feature_length()
+			if max_track_feature_length>max_feature_length:
+				max_feature_length=max_track_feature_length
+			for plot in my_tracks[track].plots:
+				for data in plot.xdata:
+					if data[-1]>max_feature_length:
+						max_feature_length=data[-1]
 	
 	#tell each track what the max feature length is
 	for track in my_tracks:

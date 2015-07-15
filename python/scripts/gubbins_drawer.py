@@ -801,7 +801,7 @@ if __name__ == "__main__":
 	#tell each track what the max feature length is
 	for track in my_tracks:
 		if my_tracks[track].max_feature_length<max_feature_length:
-				my_tracks[track].max_feature_length=max_feature_length
+			my_tracks[track].max_feature_length=max_feature_length
 
 
 	beginning=0
